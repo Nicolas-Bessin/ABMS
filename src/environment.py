@@ -13,9 +13,9 @@ class Environment:
         G.add_edge(2, 3)
         G.add_edge(3, 4)
         G.add_edge(4, 1)
-        self.map = G
-        self.pos = nx.spring_layout(G, iterations=200)
+        self.map = nx.barbell_graph(3,1)
+        self.pos = nx.spring_layout(self.map, iterations=200)
 
     def Draw_Graph(self, color_map):
         nx.draw(self.map, self.pos, node_color=color_map, with_labels=True, font_weight='bold')
-        plt.pause(1)
+        plt.pause(2)

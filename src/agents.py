@@ -6,8 +6,9 @@ def New_Itinerary(g, source, target):
 
 
 class Agent:
-    def __init__(self, identity, initial_position, home, goal, g):
+    def __init__(self, identity, initial_position, home, goal, color, g):
         self.id = identity
+        self.color = color
         self.goal_reached = None
         self.position = initial_position  # Attributes with the current position
         self.home = home  # Attribute with the home of the agent
