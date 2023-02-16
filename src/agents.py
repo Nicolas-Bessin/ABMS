@@ -12,15 +12,15 @@ class agent(mesa.Agent):
 
     def move(self):
         target = 0
-        if success == True:
-            target = base
+        if self.success == True:
+            target = self.base
         else :
-            target = goal
-        trip = nx.bidirectional_shortest_path(self.model.Graph,position, target)
+            target = self.goal
+        trip = nx.bidirectional_shortest_path(self.model.Graph, self.position, target)
         self.position = trip[1]
 
     def step(self):
-        if position == goal:
+        if self.position == self.goal:
             self.success = True
         self.move()
 
