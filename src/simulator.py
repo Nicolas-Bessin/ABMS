@@ -6,23 +6,30 @@ colors = ["red", "green", "yellow"]
 
 
 class Simulator:
-    def __init__(self, n):
-        self.nb_agents = n
-        self.environment = Environment()
-        self.list_agent = []
+    nb_agents = 0
+    environment = Environment()
+    list_agent = []
+    color_map = []
+    
+    def __init__(self):
+        pass
+
+    def default_setup(self):
+        self.nb_agents = 1
+        self.environment.default_setup()
         for i in range(self.nb_agents):
-            home = rd.randint(0, self.environment.map.number_of_nodes()-1)
-            self.list_agent.append(Agent(i, home, home, 1, colors[i], self.environment.map))
-        self.color_map = ["blue" for i in range(self.environment.map.number_of_nodes())]
+            home = 3
+            self.list_agent.append(Agent(i, home, home, 1, colors[i]))
+        self.color_map = ["blue" for i in range(self.environment.n_noeud)]
         for agent in self.list_agent:
-            self.color_map[agent.position-1] = agent.color
+            self.color_map[agent.position] = agent.color 
 
     def Step(self):
         for agent in self.list_agent:
-            agent.Step()
-        self.color_map = ["blue" for i in range(self.environment.map.number_of_nodes())]
+            agent.Step(self.environment.G)
+        self.color_map = ["blue" for i in range(self.environment.n_noeud)]
         for agent in self.list_agent:
-            self.color_map[agent.position - 1] = agent.color
+            self.color_map[agent.position] = agent.color
 
     def Run(self):
         Done = False

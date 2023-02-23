@@ -1,4 +1,5 @@
 from simulator import *
 
-S = Simulator(3)
+S = Simulator()
+S.default_setup()
 S.Run()

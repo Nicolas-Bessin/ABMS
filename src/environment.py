@@ -3,66 +3,52 @@ import matplotlib.pyplot as plt
 
 
 class Environment:
+    G = nx.DiGraph() #graphe
+    n_noeud = 0 #nombre de noeuds
+    pos = {} #dictionnaire des positions
+    weights = {} #dictionnaire des poids des arrêtes
+
     def __init__(self):
-        G = nx.Graph()
-        G.add_node(1)
-        G.add_node(2)
-        G.add_node(3)
-        G.add_node(4)
-        G.add_edge(1, 2)
-        G.add_edge(2, 3)
-        G.add_edge(3, 4)
-        G.add_edge(4, 1)
-        self.map = nx.barbell_graph(3,1)
-        self.pos = nx.spring_layout(self.map, iterations=200)
-
-    def Draw_Graph(self, color_map):
-        nx.draw(self.map, self.pos, node_color=color_map, with_labels=True, font_weight='bold')
-        plt.pause(2)
-
-class Graphe:
-    pos_x = [] #x coord of the nodes
-    pos_y = [] #y coord of the nodes
-    G = nx.Graph()
-    n = 0 #number of nodes
-    def __init__(self) -> None:
         pass
+
     def add_node(self, x, y):
-        self.G.add_node(self.n)
-        self.pos_x.append(x)
-        self.pos_y.append(y)
-        self.n += 1
-    def add_edge(self, ori, dest, speed, length):
-        #Adds an edge between two already existing nodes
-        #Calculates the weight bases on speed and length 
-        if ori > self.n or dest > self.n:
+        """Add nodes in order, first one is 0, next is 1, ...
+        Don't forget to update / set the graph map & layout with self.set_graph"""
+        self.G.add_node(self.n_noeud)
+        self.pos[self.n_noeud] = (x, y)
+        self.n_noeud += 1
+
+    def add_edge(self, ori, dest , speed, length):
+        """Adds an edge between two already existing nodes
+        Calculates the weight bases on speed and length
+        Don't forget to update / set the graph map & layout with self.set_graph"""
+        if ori > self.n_noeud or dest > self.n_noeud:
             raise "Nodes not defined"
         time = length / speed
-        self.G.add_edge(ori, dest, weight = time)
+        self.G.add_edge(ori, dest)
+        self.G[ori][dest]["length"] = length
+        self.G[ori][dest]["speed"] = speed
+        self.weights[(ori, dest)] = time
 
-    def draw_graph(self, color_map):
-        plt.scatter(self.pos_x, self.pos_y, c=color_map)
-        for edge in self.G.edges.data():
-            ori = edge[0]
-            dest = edge[1]
-            weight = edge[2]['weight']
-            x = [self.pos_x[ori], self.pos_x[dest]]
-            y = [self.pos_y[ori], self.pos_y[dest]]
-            plt.plot(x, y, linewidth = weight, c = "black")
-        plt.show()
+    def default_setup(self):
+        self.add_node(0, 0)
+        self.add_node(0, 1)
+        self.add_node(1, 1)
+        self.add_node(1, 0)
+        self.add_edge(0, 1, 1, 1)
+        self.add_edge(1, 2, 1, 1)
+        self.add_edge(2, 3, 1, 1)
+        self.add_edge(3, 0, 1, 1)
+        self.add_edge(1, 3, 1, 1)
+    
+    def Draw_Graph(self, color_map):
+        #print(self.pos)
+        nx.draw(self.G, self.pos, node_color=color_map, with_labels=True, font_weight='bold')
+        nx.draw_networkx_edge_labels(self.G, self.pos, self.weights)
+        plt.pause(1)
 
-def default_Graphe():
-    g = Graphe()
-    g.add_node(0, 0)
-    g.add_node(0, 1)
-    g.add_node(1, 1)
-    g.add_node(1, 0)
-    g.add_edge(0, 1, 1, 1)
-    g.add_edge(1, 2, 1, 1)
-    g.add_edge(2, 3, 1, 1)
-    g.add_edge(3, 0, 1, 1)
-    return g
-
-if __name__ ==  "__main__":
-    g = default_Graphe()
-    g.draw_graph(["blue" for i in range(g.n)])
+if __name__ ==  "__ main__":
+    g = Environment()
+    g.default_setup()
+    color_map = ["blue" for i in range(g.n_noeud)]
+    g.Draw_Graph(color_map)

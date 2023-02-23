@@ -1,12 +1,17 @@
 import networkx as nx
 
+def time_to_travel(ori, dest, attributes):
+    #print(attributes)
+    """Computes the time to travel an edge between ori and dest,
+    given the edge attributes"""
+    time = attributes["length"] / attributes["speed"]
+    return time
 
-def New_Itinerary(g, source, target):
-    return nx.bidirectional_shortest_path(g, source, target)
-
+def New_Itinerary(graph, source, target):
+    return nx.shortest_path(graph, source=source, target=target, weight=time_to_travel)
 
 class Agent:
-    def __init__(self, identity, initial_position, home, goal, color, g):
+    def __init__(self, identity, initial_position, home, goal, color):
         self.id = identity
         self.color = color
         self.goal_reached = None
@@ -15,7 +20,6 @@ class Agent:
         self.goal = goal  # Attribute with the goal (a place to reach and then come back)
         self.goal_reached = False  # Attribute indicating if the goal was reached or not
         self.itinerary = [0]  # Set to 0 to compute a first itinerary at the first iteration
-        self.map = g
 
     def Target_Node(self):  # Return the current target node depending on if the goal was reached
         if not self.goal_reached:
@@ -29,7 +33,7 @@ class Agent:
         else:
             return False
 
-    def Step(self):
+    def Step(self, graph):
         # Definition of the current target node
         target = self.Target_Node()
 
@@ -37,7 +41,7 @@ class Agent:
         if not self.Is_Itinerary_Viable(self):
             # No
             # Calculate a new itinerary
-            self.itinerary = New_Itinerary(self.map, self.position, target)
+            self.itinerary = New_Itinerary(graph, self.position, target)
 
         # Take the next step in the itinerary
         Moved = False
