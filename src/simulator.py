@@ -3,7 +3,7 @@ from environment import *
 import random as rd
 
 colors = ["red", "green", "yellow"]
-
+step_counter = 0
 
 class Simulator:
     nb_agents = 0
@@ -25,6 +25,8 @@ class Simulator:
             self.color_map[agent.position] = agent.color 
 
     def Step(self):
+        step_counter += 1
+        print(step_counter)
         for agent in self.list_agent:
             agent.Step(self.environment.G)
         self.color_map = ["blue" for i in range(self.environment.n_noeud)]
