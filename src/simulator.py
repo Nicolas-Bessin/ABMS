@@ -17,7 +17,7 @@ class Simulator:
         self.nb_agents = 2
         self.environment.default_setup()
         for i in range(self.nb_agents):
-            home = (i+3) % 4
+            home = (i+1) % 4
             self.list_agent.append(Agent(i, home, home, 1, colors[i]))
         self.color_map = ["blue" for i in range(self.environment.n_noeud)]
         for agent in self.list_agent:
@@ -44,6 +44,6 @@ class Simulator:
             self.Step()
             self.environment.Draw_Graph(self.color_map)
             for agent in self.list_agent:
-                if not agent.goal_reached or agent.position != agent.home:
+                if agent.isActive:
                     Done = False
         plt.show()

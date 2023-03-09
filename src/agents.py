@@ -16,6 +16,7 @@ class Agent:
         self.time_on_edge = 0  #Time spent on the current edge
         self.time_current_edge = 0 #Set to 0 to have the beginning treated as a node just reached
         self.next_node = initial_position #Set to initial position in the very beginning
+        self.isActive = True #By default all agents are active, turn to inactive once he is back
 
     def Target_Node(self):  # Return the current target node depending on if the goal was reached
         if not self.goal_reached:
@@ -30,11 +31,17 @@ class Agent:
             return False
 
     def Step(self, graph):
+        if not self.isActive:
+            return #Skip this agent
+        if self.isActive and self.home == self.goal:
+            self.isActive = False #It is pointless to use this Agent
+            return
         edgeDone = self.time_current_edge == self.time_on_edge
         isBack = self.goal_reached and self.next_node == self.home #if the upcoming node is the last one
-        if isBack and edgeDone:
+        if self.isActive and isBack and edgeDone:
             graph[self.position][self.next_node]["usage"] -= 1
             self.position = self.home
+            self.isActive = False
             return
         elif not edgeDone:
             self.time_on_edge += 1
@@ -59,6 +66,6 @@ class Agent:
             graph[self.position][self.next_node]["usage"] += 1
 
             #Reset the time of travel
-            self.time_on_edge = 0
+            self.time_on_edge = 1 #This first step counts as time travelled
             edge = graph[self.position][self.next_node]
             self.time_current_edge = time_to_travel(self.position, self.next_node, edge)
