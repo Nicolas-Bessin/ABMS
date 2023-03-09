@@ -3,7 +3,6 @@ from environment import *
 import random as rd
 
 colors = ["red", "green", "yellow"]
-step_counter = 0
 
 class Simulator:
     nb_agents = 0
@@ -14,7 +13,7 @@ class Simulator:
     def __init__(self):
         pass
 
-    def default_setup(self):
+    def default_setup(self) -> None:
         self.nb_agents = 1
         self.environment.default_setup()
         for i in range(self.nb_agents):
@@ -25,19 +24,23 @@ class Simulator:
             self.color_map[agent.position] = agent.color 
 
     def Step(self):
-        step_counter += 1
-        print(step_counter)
+        #Calcul des step des agents
         for agent in self.list_agent:
             agent.Step(self.environment.G)
         self.color_map = ["blue" for i in range(self.environment.n_noeud)]
+        for edge in self.environment.G.edges:
+            self.environment.edge_data[edge][1] = self.environment.G[edge[0]][edge[1]]["usage"]
         for agent in self.list_agent:
             self.color_map[agent.position] = agent.color
 
     def Run(self):
+        step_counter = -1
         Done = False
         self.environment.Draw_Graph(self.color_map)
         while not Done:
             Done = True
+            step_counter += 1
+            print(step_counter)
             self.Step()
             self.environment.Draw_Graph(self.color_map)
             for agent in self.list_agent:

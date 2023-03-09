@@ -16,7 +16,7 @@ class Environment:
     G = nx.DiGraph() #graphe
     n_noeud = 0 #nombre de noeuds
     pos = {} #dictionnaire des positions
-    weights = {} #dictionnaire des poids des arrêtes
+    edge_data = {} #dictionnaire des poids des arrêtes
 
     def __init__(self):
         pass
@@ -40,7 +40,7 @@ class Environment:
         self.G[ori][dest]["capacity"] = capacity
         self.G[ori][dest]["usage"] = 0
         time = time_to_travel(ori, dest, self.G[ori][dest])
-        self.weights[(ori, dest)] = time
+        self.edge_data[(ori, dest)] = [time, 0]
 
     def default_setup(self):
         self.add_node(0, 0)
@@ -56,8 +56,8 @@ class Environment:
     def Draw_Graph(self, color_map):
         #print(self.pos)
         nx.draw(self.G, self.pos, node_color=color_map, with_labels=True, font_weight='bold')
-        nx.draw_networkx_edge_labels(self.G, self.pos, self.weights)
-        plt.pause(1)
+        nx.draw_networkx_edge_labels(self.G, self.pos, self.edge_data)
+        plt.pause(0.4)
 
 if __name__ ==  "__ main__":
     g = Environment()
