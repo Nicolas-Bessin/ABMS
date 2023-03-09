@@ -14,10 +14,10 @@ class Simulator:
         pass
 
     def default_setup(self) -> None:
-        self.nb_agents = 1
+        self.nb_agents = 2
         self.environment.default_setup()
         for i in range(self.nb_agents):
-            home = 3
+            home = (i+3) % 4
             self.list_agent.append(Agent(i, home, home, 1, colors[i]))
         self.color_map = ["blue" for i in range(self.environment.n_noeud)]
         for agent in self.list_agent:
