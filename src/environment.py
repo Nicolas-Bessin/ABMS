@@ -53,14 +53,36 @@ class Environment:
         self.add_edge(3, 0, 1, 2)
         self.add_edge(1, 3, 1, 5)
     
-    def Draw_Graph(self, color_map):
-        #print(self.pos)
-        nx.draw(self.G, self.pos, node_color=color_map, with_labels=True, font_weight='bold')
-        nx.draw_networkx_edge_labels(self.G, self.pos, self.edge_data)
-        plt.pause(0.4)
+    def default_2(self, N):
+        """Sets up a N*N grid with uniform 2-way edges"""
+        for i in range(N):
+            for j in range(N):
+                self.add_node(i,j)
+        for i in range(N-1):
+            for j in range(N-1):
+                self.add_edge(N*i + j, N*i + j+1, 1, 5)
+                self.add_edge(N*i + j+1, N*i + j, 1, 5)
+                self.add_edge(N*i + j, N*(i+1) + j, 1, 5)
+                self.add_edge(N*(i+1) + j, N*i + j, 1, 5)
+        for i in range(N-1):
+            self.add_edge(N-1 + i*N, N-1 + (i+1)*N, 1, 5)
+            self.add_edge(N-1 + (i+1)*N, N-1 + i*N, 1, 5)
+            self.add_edge(N*(N-1) + i, N*(N-1) + i+1, 1, 5)
+            self.add_edge(N*(N-1) + i+1, N*(N-1) + i, 1, 5)
 
-if __name__ ==  "__ main__":
+    def Draw_Graph(self, color_map, axe):
+        nx.draw(self.G, self.pos, node_color=color_map, with_labels=True, font_weight='bold', ax=axe)
+        nx.draw_networkx_edge_labels(self.G, self.pos, self.edge_data, ax=axe)
+
+if __name__ ==  "__main__":
+    print('hi')
+    fig = plt.figure()
+    ax = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
     g = Environment()
     g.default_setup()
+    #ax.plot([x for x in range(10)], [x for x in range(10)])
     color_map = ["blue" for i in range(g.n_noeud)]
-    g.Draw_Graph(color_map)
+    g.Draw_Graph(color_map, ax2)
+    #nx.draw(g.G, g.pos, node_color=color_map, with_labels=True, font_weight='bold')
+    plt.show()

@@ -13,15 +13,15 @@ class Simulator:
     def __init__(self):
         pass
 
-    def default_setup(self) -> None:
+    def default_setup(self, Grid_size) -> None:
         self.nb_agents = 2
-        self.environment.default_setup()
+        self.environment.default_2(Grid_size)
         for i in range(self.nb_agents):
-            home = (i+1) % 4
-            self.list_agent.append(Agent(i, home, home, 1, colors[i]))
+            home = rd.randint(0, Grid_size*Grid_size)
+            self.list_agent.append(Agent(i, home, home, 0, colors[i]))
         self.color_map = ["blue" for i in range(self.environment.n_noeud)]
         for agent in self.list_agent:
-            self.color_map[agent.position] = agent.color 
+            self.color_map[agent.position % 3] = agent.color 
 
     def Step(self):
         #Calcul des step des agents
@@ -47,3 +47,4 @@ class Simulator:
                 if agent.isActive:
                     Done = False
         plt.show()
+    
