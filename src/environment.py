@@ -70,9 +70,10 @@ class Environment:
             self.add_edge(N*(N-1) + i, N*(N-1) + i+1, 1, 5)
             self.add_edge(N*(N-1) + i+1, N*(N-1) + i, 1, 5)
 
-    def Draw_Graph(self, color_map, axe):
-        nx.draw(self.G, self.pos, node_color=color_map, with_labels=True, font_weight='bold', ax=axe)
-        nx.draw_networkx_edge_labels(self.G, self.pos, self.edge_data, ax=axe)
+    def Draw_Graph(self, color_map, axe, init = False):
+        if init:
+            nx.draw(self.G, self.pos, node_color=color_map, with_labels=True, font_weight='bold', ax=axe)
+        #nx.draw_networkx_edge_labels(self.G, self.pos, self.edge_data, ax=axe)
 
 if __name__ ==  "__main__":
     print('hi')
