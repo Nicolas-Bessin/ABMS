@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation
 from simulator import *
 
-grid_size = 5
+grid_size = 10
 simul = Simulator
 simul.default_setup(self = simul, Grid_size=grid_size)
 fig = plt.figure()
@@ -19,7 +19,7 @@ def update(ite_counter):
                 Done = False
     if not Done:
         simul.Step(self=simul)
-        simul.environment.Draw_Graph(simul.color_map, ax, False)
+        #simul.environment.Draw_Graph(simul.color_map, ax, False)
     else:
         dist, time = simul.finalResults(self=simul)
         print("Total distance travelled : ", dist)
@@ -34,6 +34,9 @@ def gen():
          
 
 if __name__ == "__main__":
+    """
     simul.environment.Draw_Graph(simul.color_map, ax, True)
     ani = matplotlib.animation.FuncAnimation(fig, update, frames=gen, repeat=False)
     plt.show()  
+    """
+    simul.Run_simulation(self=simul, ax=ax)

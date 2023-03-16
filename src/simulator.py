@@ -42,18 +42,21 @@ class Simulator:
             total_vkt += agent.dist_trav
         return total_vkt, total_tt
 
-    def Run(self):
+    def Run_simulation(self, ax):
         step_counter = -1
         Done = False
-        self.environment.Draw_Graph(self.color_map)
+        self.environment.Draw_Graph(self.color_map, ax, True)
         while not Done:
             Done = True
             step_counter += 1
             print(step_counter)
-            self.Step()
-            self.environment.Draw_Graph(self.color_map)
+            self.Step(self)
             for agent in self.list_agent:
                 if agent.isActive:
                     Done = False
+        else:
+            dist, time = self.finalResults(self)
+            print("Total distance travelled : ", dist)
+            print("Total time travelled : ", time)
         plt.show()
     
