@@ -21,7 +21,9 @@ def update(ite_counter):
         simul.Step(self=simul)
         simul.environment.Draw_Graph(simul.color_map, ax, False)
     else:
-        pass
+        dist, time = simul.finalResults(self=simul)
+        print("Total distance travelled : ", dist)
+        print("Total time travelled : ", time)
         
 def gen():
     global Done

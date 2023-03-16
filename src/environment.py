@@ -54,21 +54,23 @@ class Environment:
         self.add_edge(1, 3, 1, 5)
     
     def default_2(self, N):
+        def_speed = 0.5
+        def_length = 5
         """Sets up a N*N grid with uniform 2-way edges"""
         for i in range(N):
             for j in range(N):
                 self.add_node(i,j)
         for i in range(N-1):
             for j in range(N-1):
-                self.add_edge(N*i + j, N*i + j+1, 1, 5)
-                self.add_edge(N*i + j+1, N*i + j, 1, 5)
-                self.add_edge(N*i + j, N*(i+1) + j, 1, 5)
-                self.add_edge(N*(i+1) + j, N*i + j, 1, 5)
+                self.add_edge(N*i + j, N*i + j+1, def_speed, def_length)
+                self.add_edge(N*i + j+1, N*i + j, def_speed, def_length)
+                self.add_edge(N*i + j, N*(i+1) + j, def_speed, def_length)
+                self.add_edge(N*(i+1) + j, N*i + j, def_speed, def_length)
         for i in range(N-1):
-            self.add_edge(N-1 + i*N, N-1 + (i+1)*N, 1, 5)
-            self.add_edge(N-1 + (i+1)*N, N-1 + i*N, 1, 5)
-            self.add_edge(N*(N-1) + i, N*(N-1) + i+1, 1, 5)
-            self.add_edge(N*(N-1) + i+1, N*(N-1) + i, 1, 5)
+            self.add_edge(N-1 + i*N, N-1 + (i+1)*N, def_speed, def_length)
+            self.add_edge(N-1 + (i+1)*N, N-1 + i*N, def_speed, def_length)
+            self.add_edge(N*(N-1) + i, N*(N-1) + i+1, def_speed, def_length)
+            self.add_edge(N*(N-1) + i+1, N*(N-1) + i, def_speed, def_length)
 
     def Draw_Graph(self, color_map, axe, init = False):
         if init:

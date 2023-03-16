@@ -9,6 +9,7 @@ class Simulator:
     environment = Environment()
     list_agent = []
     color_map = []
+    total_vkt = 0
     
     def __init__(self):
         pass
@@ -32,6 +33,14 @@ class Simulator:
             self.environment.edge_data[edge][1] = self.environment.G[edge[0]][edge[1]]["usage"]
         for agent in self.list_agent:
             self.color_map[agent.position] = agent.color
+    
+    def finalResults(self):
+        total_vkt = 0 #total distance travelled
+        total_tt = 0 #total time travelled
+        for agent in self.list_agent:
+            total_tt += agent.time_trav
+            total_vkt += agent.dist_trav
+        return total_vkt, total_tt
 
     def Run(self):
         step_counter = -1

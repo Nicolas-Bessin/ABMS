@@ -17,6 +17,8 @@ class Agent:
         self.time_current_edge = 0 #Set to 0 to have the beginning treated as a node just reached
         self.next_node = initial_position #Set to initial position in the very beginning
         self.isActive = True #By default all agents are active, turn to inactive once he is back
+        self.dist_trav = 0
+        self.time_trav = 0
 
     def Target_Node(self):  # Return the current target node depending on if the goal was reached
         if not self.goal_reached:
@@ -42,11 +44,14 @@ class Agent:
             graph[self.position][self.next_node]["usage"] -= 1
             self.position = self.home
             self.isActive = False
+            #self.time_trav += 1
             return
         elif not edgeDone:
             self.time_on_edge += 1
+            self.time_trav += 1
             return
         elif edgeDone and not isBack:
+            self.time_trav += 1
             #We have reached the end point o this edge
             if self.position != self.next_node:
                 graph[self.position][self.next_node]["usage"] -= 1
@@ -64,6 +69,9 @@ class Agent:
             ite = New_Itinerary(graph, self.position, target)
             self.next_node = ite[1]
             graph[self.position][self.next_node]["usage"] += 1
+
+            #Distance to be covered on the next edge
+            self.dist_trav += graph[self.position][self.next_node]["length"]
 
             #Reset the time of travel
             self.time_on_edge = 1 #This first step counts as time travelled
