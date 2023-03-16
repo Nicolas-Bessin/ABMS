@@ -77,3 +77,19 @@ class Agent:
             self.time_on_edge = 1 #This first step counts as time travelled
             edge = graph[self.position][self.next_node]
             self.time_current_edge = time_to_travel(self.position, self.next_node, edge)
+
+
+class Livreur():
+    def __init__(self,id, magasin, nodes_deliv):
+        self.id = id
+        self.position = magasin
+        self.itinerary = []
+        self.time_on_edge = 0  #Time spent on the current edge
+        self.time_current_edge = 0 #Set to 0 to have the beginning treated as a node just reached
+        self.next_node = magasin #Set to initial position in the very beginning
+        self.nodes_deliv = nodes_deliv
+        self.isActive = True
+        self.dist_trav = 0
+        self.time_trav = 0
+        self.current_node_on_ite = 0
+        self.itinerary
