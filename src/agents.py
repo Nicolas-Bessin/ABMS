@@ -82,14 +82,55 @@ class Agent:
 class Livreur():
     def __init__(self,id, magasin, nodes_deliv):
         self.id = id
-        self.position = magasin
+        self.store = magasin
         self.itinerary = []
+        self.position = magasin
+        self.next_node = magasin
         self.time_on_edge = 0  #Time spent on the current edge
         self.time_current_edge = 0 #Set to 0 to have the beginning treated as a node just reached
-        self.next_node = magasin #Set to initial position in the very beginning
         self.nodes_deliv = nodes_deliv
         self.isActive = True
         self.dist_trav = 0
         self.time_trav = 0
-        self.current_node_on_ite = 0
-        self.itinerary
+        self.pos_index = 0 #index of the current node in the itinerary
+    
+    def livreur_routing(self, graph):
+        pass
+
+    def Step(self, graph):
+        if not self.isActive:
+            return #Skip this agent
+        if self.isActive and len(self.nodes_deliv) == 0:
+            self.isActive = False #It is pointless to use this Agent
+            return
+        edgeDone = self.time_current_edge == self.time_on_edge
+        isBack = self.pos_index == len(self.itinerary) - 2 #if the upcoming node is the last one
+        if self.isActive and isBack and edgeDone:
+            graph[self.position][self.next_node]["usage"] -= 1
+            self.pos_index += 1
+            self.isActive = False
+            #self.time_trav += 1
+            return
+        elif not edgeDone:
+            self.time_on_edge += 1
+            self.time_trav += 1
+            return
+        elif edgeDone and not isBack:
+            self.time_trav += 1
+            #We have reached the end point o this edge
+            if self.position != self.next_node:
+                graph[self.position][self.next_node]["usage"] -= 1
+            
+            #Define the new next_node
+            self.pos_index += 1
+            self.position = self.itinerary[self.pos_index]
+            self.next_node = self.itinerary[self.pos_index + 1]
+            graph[self.position][self.next_node]["usage"] += 1
+
+            #Distance to be covered on the next edge
+            self.dist_trav += graph[self.position][self.next_node]["length"]
+
+            #Reset the time of travel
+            self.time_on_edge = 1 #This first step counts as time travelled
+            edge = graph[self.position][self.next_node]
+            self.time_current_edge = time_to_travel(self.position, self.next_node, edge)
