@@ -25,11 +25,13 @@ class Simulator:
             home = rd.randint(0, Grid_size*Grid_size)
             self.list_agent.append(Agent(i, home, home, n_mag, "red")) #An agent that wants to go to the store
         #Construction des agents qui se font livrer
-        nodes_to_deliv_to = []
+        nodes_to_deliv_to = [n_mag] #Must go through the store, in fact begin there (we need to shift the ite for that)
         for i in range(self.nb_deliv_agents):
             home = rd.randint(0, Grid_size*Grid_size)
-            nodes_to_deliv_to.append(home)
-        
+            if home not in nodes_to_deliv_to: #Only append the destination once
+                nodes_to_deliv_to.append(home)
+        #nodes_to_deliv_to.append(n_mag)
+        print(nodes_to_deliv_to)
         self.livreurs.append(Livreur(0, n_mag, nodes_to_deliv_to, self.environment.G))
 
         self.color_map = ["blue" for i in range(self.environment.n_noeud)]
@@ -67,7 +69,7 @@ class Simulator:
         while not Done:
             Done = True
             step_counter += 1
-            print(step_counter)
+            #print(step_counter)
             self.Step(self)
             for agent in self.list_agent:
                 if agent.isActive:

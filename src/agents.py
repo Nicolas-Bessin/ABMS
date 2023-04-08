@@ -92,9 +92,23 @@ class Livreur():
         self.dist_trav = 0
         self.time_trav = 0
         self.pos_index = 0 #index of the current node in the itinerary
-        tsp = nx.approximation.traveling_salesman_problem
         #print(self.nodes_deliv)
-        self.itinerary = tsp(graph, weight="weight", nodes=self.nodes_deliv)        
+        if len(nodes_deliv) == 1: #No one uses the deliv service, only the store is in the list
+            self.isActive == False
+        elif len(nodes_deliv) == 2: #Only one client
+            self.itinerary = nx.shortest_path(graph, magasin, nodes_deliv[1], weight=time_to_travel)
+            fin_ite = nx.shortest_path(graph, nodes_deliv[1], magasin, weight=time_to_travel)
+            for i in range(1, len(fin_ite)):
+                self.itinerary.append(fin_ite[i])
+            print(self.itinerary)
+        else: #Normal case, more than one spot for the delivery
+            tsp = nx.approximation.traveling_salesman_problem
+            ite = tsp(graph, weight="weight", nodes=self.nodes_deliv)
+            ite = ite[:-1] #Remove the last as it is repeated (cycle)
+            ind_mag = ite.index(magasin) #Shift the cycle so that the delivery begins (and ends) at the store
+            n = len(ite)
+            self.itinerary = [ite[(ind_mag + i) % n] for i in range(n)]
+            print("ite : ", self.itinerary)     
 
     def Step(self, graph):
         if not self.isActive:
