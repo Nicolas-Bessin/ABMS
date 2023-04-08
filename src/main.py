@@ -3,7 +3,7 @@ import matplotlib.animation
 from simulator import *
 
 grid_size = 10
-n_agent = 10 #number of agents
+n_agent = 10 #Total number of agents (those who get deliv + those who go in person)
 x_deliv = 0.6 #proportion of agents who get delivered
 n_mag = 0 #node the store is at
 simul = Simulator
