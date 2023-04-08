@@ -80,22 +80,21 @@ class Agent:
 
 
 class Livreur():
-    def __init__(self,id, magasin, nodes_deliv):
+    def __init__(self,id, magasin, nodes_deliv, graph):
         self.id = id
         self.store = magasin
-        self.itinerary = []
         self.position = magasin
         self.next_node = magasin
         self.time_on_edge = 0  #Time spent on the current edge
         self.time_current_edge = 0 #Set to 0 to have the beginning treated as a node just reached
-        self.nodes_deliv = nodes_deliv
+        self.nodes_deliv = nodes_deliv #Nodes to deliver at 
         self.isActive = True
         self.dist_trav = 0
         self.time_trav = 0
         self.pos_index = 0 #index of the current node in the itinerary
-    
-    def livreur_routing(self, graph):
-        pass
+        tsp = nx.approximation.traveling_salesman_problem
+        #print(self.nodes_deliv)
+        self.itinerary = tsp(graph, weight="weight", nodes=self.nodes_deliv)        
 
     def Step(self, graph):
         if not self.isActive:
@@ -117,7 +116,7 @@ class Livreur():
             return
         elif edgeDone and not isBack:
             self.time_trav += 1
-            #We have reached the end point o this edge
+            #We have reached the end point of this edge
             if self.position != self.next_node:
                 graph[self.position][self.next_node]["usage"] -= 1
             

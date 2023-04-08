@@ -3,40 +3,14 @@ import matplotlib.animation
 from simulator import *
 
 grid_size = 10
+n_agent = 10 #number of agents
+x_deliv = 0.6 #proportion of agents who get delivered
+n_mag = 0 #node the store is at
 simul = Simulator
-simul.default_setup(self = simul, Grid_size=grid_size)
+simul.default_setup(self = simul, Grid_size=grid_size, n_agents=n_agent, x_deliv= x_deliv,n_mag= n_mag)
 fig = plt.figure()
 ax = fig.add_subplot(111)
-Done = False
-
-def update(ite_counter):
-    #ax.clear()
-    print(ite_counter)
-    global Done
-    Done = True
-    for agent in simul.list_agent:
-        if agent.isActive:
-                Done = False
-    if not Done:
-        simul.Step(self=simul)
-        #simul.environment.Draw_Graph(simul.color_map, ax, False)
-    else:
-        dist, time = simul.finalResults(self=simul)
-        print("Total distance travelled : ", dist)
-        print("Total time travelled : ", time)
-        
-def gen():
-    global Done
-    i = 0
-    while not Done:
-         i += 1
-         yield i
-         
+Done = False       
 
 if __name__ == "__main__":
-    """
-    simul.environment.Draw_Graph(simul.color_map, ax, True)
-    ani = matplotlib.animation.FuncAnimation(fig, update, frames=gen, repeat=False)
-    plt.show()  
-    """
     simul.Run_simulation(self=simul, ax=ax)

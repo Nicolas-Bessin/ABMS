@@ -40,6 +40,7 @@ class Environment:
         self.G[ori][dest]["capacity"] = capacity
         self.G[ori][dest]["usage"] = 0
         time = time_to_travel(ori, dest, self.G[ori][dest])
+        self.G[ori][dest]["weight"] = time #Used in the traveling salesman problem
         self.edge_data[(ori, dest)] = [time, 0]
 
     def default_setup(self):
